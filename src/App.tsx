@@ -73,19 +73,21 @@ const App = () => {
   return (
     <Wrapper>
 
+      {/* Drawer from right */}
       <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
         <Cart cartItems={cartItems} addToCart={handleAddToCart} removeFromCart={handleRemoveFromCart} />
       </Drawer>
 
+      {/* Styles */}
       <StyledButton onClick={() => setCartOpen(true)}>
         {/* Circle Badge */}
-        <Badge badgeContent={getTotalItems(cartItems)} color='error'>  {/* error = red */}
+        <Badge badgeContent={getTotalItems(cartItems)} color='error'>  {/* error = 'red' color, primary = 'green' color */}
           <AddShoppingCartIcon />   {/* Shopping cart icon */}
         </Badge>
       </StyledButton>
 
-      {/* content in 3 rows in 'items' */}
-      <Grid container spacing={3}>  {/* spacing between items */}
+      {/* grid around 'items' */}
+      <Grid container spacing={3}>  {/* spacing between 3 columns of 'items' */}
         {data?.map(item => (
           // content in each item
           <Grid item key={item.id} xs={12} sm={4}>

@@ -22,7 +22,7 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
       <h2>Your Shopping Cart</h2>
 
       {/* check if items present - NO ITEMS */}
-      {cartItems.length === 0 ? <p>No items in cart.</p> : null}
+      {cartItems.length === 0 ? <h2 style={{textAlign: 'center'}} >No items in cart.</h2> : null}
 
       {/* display items from data */}
       {cartItems.map(item => (
@@ -30,7 +30,7 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
       ))}
 
       {/* display Total */}
-      <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
+      <h2>{cartItems.length !== 0 ? `Total: ${calculateTotal(cartItems).toFixed(2)}` : null}</h2>
     </Wrapper>
 
   );
