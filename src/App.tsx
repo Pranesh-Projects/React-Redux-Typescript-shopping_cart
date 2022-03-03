@@ -13,6 +13,14 @@ import Badge from '@material-ui/core/Badge';   // Circle badge from 'iconButton'
 import Grid from '@material-ui/core/Grid';   // Grid for item
 // Material UI - icons
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+// Redux
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "./state/hooks";
+// import { depositMoney, withdrawMoney } from '../state/action-creators/index'
+
+import { bindActionCreators } from "redux";
+// action-creators exported
+import { action } from "./state/index";
 
 // Types
 export type CartItemType = {
@@ -22,7 +30,7 @@ export type CartItemType = {
   image: string;
   price: number;
   title: string;
-  amount: number;
+  amount: number;  // no of products
 };
 
 // Get content from url
@@ -36,6 +44,11 @@ const App = () => {
   const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
   // console.log(data);
 
+  const account = useAppSelector((state) => state.reducer);
+  const dispatch = useDispatch();
+
+  const { GetTotalItems } = bindActionCreators(action, dispatch);
+
   // Add items to cart
   const handleAddToCart = (clickedItem: CartItemType) => {
     setCartItems(prev => {
@@ -47,6 +60,7 @@ const App = () => {
       // First time the item is added
       return [...prev, { ...clickedItem, amount: 1 }];
     });
+    GetTotalItems(cartItems)
   };
 
   // Remove item from cart
@@ -60,11 +74,12 @@ const App = () => {
           return [...ack, item];
       }, [] as CartItemType[])
     );
+    GetTotalItems(cartItems)
   };
 
   // Total items added to cart
-  const getTotalItems = (items: CartItemType[]) =>
-    items.reduce((ack: number, item) => ack + item.amount, 0);
+  // const getTotalItems = (items: CartItemType[]) =>
+  //   items.reduce((ack: number, item) => ack + item.amount, 0);
 
   // loading bar in the top
   if (isLoading) return <LinearProgress />;
@@ -81,7 +96,8 @@ const App = () => {
       {/* Styles */}
       <StyledButton onClick={() => setCartOpen(true)}>
         {/* Circle Badge */}
-        <Badge badgeContent={getTotalItems(cartItems)} color='error'>  {/* error = 'red' color, primary = 'green' color */}
+        {/* <Badge badgeContent={getTotalItems(cartItems)} color='error'>  error = 'red' color, primary = 'green' color */}
+        <Badge badgeContent={account} color='error'>  {/* error = 'red' color, primary = 'green' color */}
           <AddShoppingCartIcon />   {/* Shopping cart icon */}
         </Badge>
       </StyledButton>
